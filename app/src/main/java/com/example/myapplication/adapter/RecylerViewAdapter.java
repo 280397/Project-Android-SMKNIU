@@ -69,7 +69,12 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), DetailActivity.class);
 
+                i.putExtra("barcode",itemList.get(position).getBarcode());
+                i.putExtra("nama_barang",itemList.get(position).getNamaBarang());
                 i.putExtra("merek",itemList.get(position).getMerk());
+                i.putExtra("model",itemList.get(position).getModel());
+                i.putExtra("kondisi",itemList.get(position).getIdKondisi());
+                i.putExtra("lokasi",itemList.get(position).getIdLokasi());
                 i.putExtra("posisi",itemList.get(position).getDtlLokasi());
                 i.putExtra("sumber",itemList.get(position).getSumber());
                 v.getContext().startActivity(i);

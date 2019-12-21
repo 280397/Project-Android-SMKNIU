@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ScanActivity;
+import com.example.myapplication.ScanAdminAddActivity;
 import com.example.myapplication.adapter.AddListAdapter;
 import com.example.myapplication.model.DataAddItem;
 import com.example.myapplication.model.ResponseAdd;
@@ -33,10 +34,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
+
 public class AddFragment extends Fragment{
     private AddViewModel addViewModel;
     public static EditText et_tgl_kembali, et_keperluan;
-    String id_user_pjmm, id_user;
+    String kode, id_user_pjmm,id;
     private  Button btn;
     AddListAdapter adapter;
     RecyclerView recyclerView;
@@ -63,6 +67,16 @@ public class AddFragment extends Fragment{
 
 
 //
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btnadmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,17 +85,13 @@ public class AddFragment extends Fragment{
                 } else if (TextUtils.isEmpty(et_keperluan.getText())){
                     et_keperluan.setError("Form tidak boleh kosong!");
                 }else {
-
-                pinjam(id_user_pjmm,et_tgl_kembali.getText().toString(),id_user,et_keperluan.getText().toString());
+                    Intent i = new Intent(getActivity(), ScanAdminAddActivity.class);
+                    i.putExtra("tgl_kembali",et_tgl_kembali.getText().toString());
+                    i.putExtra("keperluan",et_keperluan.getText().toString());
+                    startActivity(i);
                 }
-            }
-        });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ScanActivity.class);
-                startActivity(intent);
+
             }
         });
         return root;
@@ -110,12 +120,13 @@ public class AddFragment extends Fragment{
                     adapter.setOnclickListener(new AddListAdapter.deleteListener() {
                         @Override
                         public void deleteSelected(DataAddItem item, int possition) {
-                               delete(item.getIdDetail(),possition);
+                               delete(item.getId(),possition);
                         }
                     });
                     adapter.setData(add);
+//                    id = add.get(0).getId();
                     id_user_pjmm = add.get(0).getIdUserPjm();
-                    id_user = add.get(0).getIdUser();
+//                    id_user = add.get(0).getIdUser();
                     progressBar.setVisibility(View.GONE);
                     recyclerView.setAdapter(adapter);
                 } else {
@@ -157,26 +168,39 @@ public class AddFragment extends Fragment{
 
     }
 
-    public void pinjam(String id_user_pjm, String tgl_kembali, String id_user, String keperluan){
-        Call<ResponseAdd> pinjam = Initretrofit.getInstance().putData(id_user_pjm, tgl_kembali, id_user, keperluan);
-        pinjam.enqueue(new Callback<ResponseAdd>() {
-            @Override
-            public void onResponse(Call<ResponseAdd> call, Response<ResponseAdd> response) {
-              Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
-
-//              mengosongkan form
-              et_tgl_kembali.setText("");
-              et_keperluan.setText("");
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: "+resultCode);
+        if (resultCode == RESULT_OK){
+//            mengosongkan form
+                et_tgl_kembali.setText("");
+                et_keperluan.setText("");
                 add.clear();
-              adapter.setData(add);
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseAdd> call, Throwable t) {
-
-            }
-        });
+                adapter.setData(add);
+        }
     }
+
+    //    public void pinjam(String id_user_pjm, String tgl_kembali, String keperluan){
+//        Call<ResponseAdd> pinjam = Initretrofit.getInstance().putData(id_user_pjm,tgl_kembali, keperluan);
+//        pinjam.enqueue(new Callback<ResponseAdd>() {
+//            @Override
+//            public void onResponse(Call<ResponseAdd> call, Response<ResponseAdd> response) {
+//              Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
+//
+////              mengosongkan form
+//              et_tgl_kembali.setText("");
+//              et_keperluan.setText("");
+//                add.clear();
+//              adapter.setData(add);
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseAdd> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
 }

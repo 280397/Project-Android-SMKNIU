@@ -1,8 +1,6 @@
 package com.example.myapplication.ui.list;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +89,7 @@ public class ListFragment extends Fragment{
             @Override
             public void onFailure(Call<ResponseAdd> call, Throwable t) {
                 Toast.makeText(getActivity(), "Gagal menampilkan data!", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
 
             }
         });
@@ -102,6 +101,7 @@ public class ListFragment extends Fragment{
     public void onResume() {
         super.onResume();
         getData(Prefs.getString(SharedPreferences.getId(),""));
+
 
     }
 }

@@ -1,7 +1,9 @@
 package com.example.myapplication.network;
 
 import com.example.myapplication.model.ResponseAdd;
+import com.example.myapplication.model.ResponseAdmin;
 import com.example.myapplication.model.ResponseData;
+import com.example.myapplication.model.ResponseKembali;
 import com.example.myapplication.model.ResponseLogin;
 
 import retrofit2.Call;
@@ -10,7 +12,6 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -38,23 +39,45 @@ public interface ApiInterface {
     Call<ResponseAdd> getList(
             @Query("id_user_pjm") String id_user_pjm
     );
+
+    @GET("api/Aju_pinjam")
+    Call<ResponseAdmin> getAdmin(
+            @Query("id_admin") String id_admin
+    );
+
+//    pengembalian
+@GET("api/barang")
+Call<ResponseKembali> getDatapinjam();
+
     @DELETE("api/pinjam/{id}")
     Call<ResponseAdd> delAddList(
             @Path("id") String id
     );
     @FormUrlEncoded
-    @PUT("api/pinjam/{id}")
+    @POST("api/Aju_pinjam/{id_user_pjm}")
     Call<ResponseAdd> putData(
-            @Path("id") String id_user_pjm,
+            @Path("id_user_pjm") String id_user_pjm,
+//            @Field("kode") String kode,
+//            @Field("id_user_pjm") String id_user_pjm,
+//            @Field("tgl_pinjam") String tgl_pinjam,
             @Field("tgl_kembali") String tgl_kembali,
-            @Field("id_user") String id_user,
+            @Field("id_admin") String id_admin,
             @Field("keperluan") String keperluan
     );
     @FormUrlEncoded
-    @POST("api/pinjam")
+    @POST("api/pinjam/sekian")
     Call<ResponseData> postPinjamSe(
+//            @Field("kode") String kode,
             @Field("id_user_pjm") String id_user_pjm,
-            @Field("barcode") String barcode,
-            @Field("id_barang") String id_barang
+
+            @Field("barcode") String barcode
+//            @Field("tgl_pinjam") String tgl_pinjam,
+//            @Field("tgl_kembali") String tgl_kembali,
+//            @Field("keperluan") String keperluan,
+//            @Field("id_user") String id_user,
+//            @Field("status") String status
     );
+
+//    get admin add
+
 }

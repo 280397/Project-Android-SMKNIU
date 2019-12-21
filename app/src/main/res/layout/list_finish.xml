@@ -8,7 +8,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/list_add"
+        android:id="@+id/list_finish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -28,7 +28,7 @@
 
 
                 <TextView
-                    android:id="@+id/add_barcode"
+                    android:id="@+id/finish_barcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -36,7 +36,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/add_name"
+                    android:id="@+id/finish_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
@@ -45,7 +45,7 @@
 
             </LinearLayout>
             <Button
-                android:id="@+id/btnhapus"
+                android:id="@+id/list_btnhapus"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:text="hapus"

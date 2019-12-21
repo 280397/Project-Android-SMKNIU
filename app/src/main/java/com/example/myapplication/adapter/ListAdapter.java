@@ -39,6 +39,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.list_name.setText(List.get(position).getNamaBarang());
         holder.list_barcode.setText(List.get(position).getBarcode());
+        holder.list_tgl_kembali.setText(List.get(position).getTglKembali());
 
     }
 
@@ -48,11 +49,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView list_name, list_barcode;
+        TextView list_name, list_barcode,list_tgl_kembali;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             list_name = itemView.findViewById(R.id.list_name);
             list_barcode = itemView.findViewById(R.id.list_barcode);
+            list_tgl_kembali = itemView.findViewById(R.id.list_tgl_kembali);
         }
     }
 }
