@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ScanAdminAddActivity"></activity>
+        <activity android:name=".ScanFinishAdminActivity"></activity>
+        <activity android:name=".ScanFinishActivity" />
+        <activity android:name=".ScanAdminAddActivity" />
         <activity
             android:name=".DrawerActivity"
             android:label="@string/title_activity_drawer"

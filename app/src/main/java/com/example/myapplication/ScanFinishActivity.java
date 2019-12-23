@@ -17,7 +17,9 @@ import android.widget.Toolbar;
 
 import com.example.myapplication.model.Data;
 import com.example.myapplication.model.DataItem;
+import com.example.myapplication.model.DataKembaliItem;
 import com.example.myapplication.model.ResponseData;
+import com.example.myapplication.model.ResponseKembali;
 import com.example.myapplication.network.Initretrofit;
 import com.example.myapplication.sharepref.SharedPreferences;
 import com.example.myapplication.ui.addlist.AddFragment;
@@ -35,7 +37,7 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.CAMERA;
 
-public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class ScanFinishActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private static final String TAG = "tag";
 
@@ -120,15 +122,15 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                         Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera\n Please go to app setting and add allow permission", Toast.LENGTH_LONG).show();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{CAMERA},
-                                                            REQUEST_CAMERA);
-                                                }
-                                            }
-                                        };
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermissions(new String[]{CAMERA},
+                                                    REQUEST_CAMERA);
+                                        }
+                                    }
+                                };
                                 return;
                             }
                         }
@@ -141,11 +143,11 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result rawResult) {
 //         Do something with the result here
-         Log.d("lihatini", rawResult.getText()); // Prints scan results
+        Log.d("lihatini", rawResult.getText()); // Prints scan results
 
-         Log.v("tag", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
+        Log.v("tag", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
-        checkbarang(rawResult.getText());
+        checkbarangkembali(rawResult.getText());
 
 //        AddFragment.tvresult.setText(rawResult.getText());
 //        onBackPressed();
@@ -155,18 +157,18 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 //        scannerView.resumeCameraPrevie
     }
 
-    private void checkbarang(final String barang) {
-        Call<ResponseData> check = Initretrofit.getInstance().getPinjam(barang);
+    private void checkbarangkembali(final String barangkembali) {
+        Call<ResponseKembali> check = Initretrofit.getInstance().getDatapinjam(barangkembali);
 
-        check.enqueue(new Callback<ResponseData>() {
+        check.enqueue(new Callback<ResponseKembali>() {
             @Override
-            public void onResponse(Call<ResponseData> call, final Response<ResponseData> response) {
-                ResponseData res = response.body();
+            public void onResponse(Call<ResponseKembali> call, final Response<ResponseKembali> response) {
+                ResponseKembali res = response.body();
                 if (res.isStatus()) {
                     Log.d("tag", res.getMessage());
 
-                    final DataItem data = res.getData().get(0);
-                    dialog.setMessage(barang +"\n"+data.getNamaBarang());
+                    final DataKembaliItem data = res.getDataKembali().get(0);
+                    dialog.setMessage(barangkembali +"\n"+data.getNamaBarang());
                     dialog.setTitle("Pinjam "+data.getNamaBarang()+"?");
                     dialog.setCancelable(false);
                     dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -174,7 +176,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                         public void onClick(DialogInterface dialogInterface, int i) {
 //                            Toast.makeText(ScanActivity.this, data.getNamaBarang(), Toast.LENGTH_SHORT).show();
 //                            Log.d("tag",""+);
-                            postSe(Prefs.getString(SharedPreferences.getId(),""),data.getBarcode());
+//                            postSe(Prefs.getString(SharedPreferences.getId(),""),data.getBarcode());
 //                            postSe(Prefs.getString(SharedPreferences.getId(),""),data.getId(),data.getBarcode());
                             Log.d(TAG, "onClick: "+data.getId()+"--"+SharedPreferences.getId()+"--"+data.getBarcode());
                         }
@@ -190,13 +192,13 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
                 } else {
                     dialog.setMessage(res.getMessage());
                     dialog.setTitle("Scan Result");
-                    dialog.setMessage(barang);
+                    dialog.setMessage(barangkembali);
                     dialog.setCancelable(false);
                     dialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                            Toast.makeText(ScanActivity.this, "Barcode not registered!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ScanFinishActivity.this, "Barcode not registered!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });
@@ -210,29 +212,29 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
             }
 
             @Override
-            public void onFailure(Call<ResponseData> call, Throwable t) {
+            public void onFailure(Call<ResponseKembali> call, Throwable t) {
 //                Toast.makeText(ScanActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void postSe (String id_user_pjm, String barcode){
-        final Call<ResponseData> post = Initretrofit.getInstance().postPinjamSe(id_user_pjm, barcode);
-        post.enqueue(new Callback<ResponseData>() {
-            @Override
-            public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {
-                Log.d("halo", response.body().getMessage());
-                Toast.makeText(ScanActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseData> call, Throwable t) {
-                Toast.makeText(ScanActivity.this, "Goods in loan status or\nQueue goods", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
+//    private void postSe (String id_user_pjm, String barcode){
+//        final Call<ResponseKembali> post = Initretrofit.getInstance().postPinjamSe(id_user_pjm,barcode);
+//        post.enqueue(new Callback<ResponseKembali>() {
+//            @Override
+//            public void onResponse(Call<ResponseKembali> call, Response<ResponseKembali> response) {
+//                Log.d("halo", response.body().getMessage());
+//                Toast.makeText(ScanFinishActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                finish();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseKembali> call, Throwable t) {
+//                Toast.makeText(ScanFinishActivity.this, "Goods in loan status or\nQueue goods", Toast.LENGTH_SHORT).show();
+//                finish();
+//            }
+//        });
+//    }
 
 
 }

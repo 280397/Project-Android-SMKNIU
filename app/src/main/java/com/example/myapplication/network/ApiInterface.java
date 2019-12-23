@@ -21,38 +21,48 @@ public interface ApiInterface {
     Call<ResponseLogin> getUser(@Field("username") String username,
                                 @Field("password") String password
     );
+//    halaman home
     @GET("api/barang")
     Call<ResponseData> getDatabarang();
 
     @GET("api/barang")
     Call<ResponseData> getSearch(
     );
+
+//    peminjaman
+//    scan barcode
     @GET("api/pinjam")
     Call<ResponseData> getPinjam(
             @Query("barcode") String barcode
             );
+
+//    menampilkan pengajuan peminjaman barang
     @GET("api/pinjam/ambil")
     Call<ResponseAdd> getAddList(
             @Query("id_user_pjm") String id_user_pjm
     );
-    @GET("api/pinjam/list")
-    Call<ResponseAdd> getList(
-            @Query("id_user_pjm") String id_user_pjm
+
+//    delete barang yang diajukan
+    @DELETE("api/pinjam/{id}")
+    Call<ResponseAdd> delAddList(
+            @Path("id") String id
     );
 
+//    post aju pinjam
+    @FormUrlEncoded
+    @POST("api/pinjam")
+    Call<ResponseData> postPinjamSe(
+        @Field("id_user_pjm") String id_user_pjm,
+        @Field("barcode") String barcode
+    );
+
+//    scan barcode admin
     @GET("api/Aju_pinjam")
     Call<ResponseAdmin> getAdmin(
             @Query("id_admin") String id_admin
     );
 
-//    pengembalian
-@GET("api/barang")
-Call<ResponseKembali> getDatapinjam();
-
-    @DELETE("api/pinjam/{id}")
-    Call<ResponseAdd> delAddList(
-            @Path("id") String id
-    );
+//post ajukan peminjaman
     @FormUrlEncoded
     @POST("api/Aju_pinjam/{id_user_pjm}")
     Call<ResponseAdd> putData(
@@ -64,20 +74,17 @@ Call<ResponseKembali> getDatapinjam();
             @Field("id_admin") String id_admin,
             @Field("keperluan") String keperluan
     );
-    @FormUrlEncoded
-    @POST("api/pinjam/sekian")
-    Call<ResponseData> postPinjamSe(
-//            @Field("kode") String kode,
-            @Field("id_user_pjm") String id_user_pjm,
 
-            @Field("barcode") String barcode
-//            @Field("tgl_pinjam") String tgl_pinjam,
-//            @Field("tgl_kembali") String tgl_kembali,
-//            @Field("keperluan") String keperluan,
-//            @Field("id_user") String id_user,
-//            @Field("status") String status
+//    list daftar pinjaman
+    @GET("api/pinjam/list")
+    Call<ResponseAdd> getList(
+            @Query("id_user_pjm") String id_user_pjm
     );
 
-//    get admin add
+
+//    pengembalian
+    @GET("api/barang")
+    Call<ResponseKembali> getDatapinjam(String barangkembali);
+
 
 }
