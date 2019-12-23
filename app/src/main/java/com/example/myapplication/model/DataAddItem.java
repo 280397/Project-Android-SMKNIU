@@ -17,6 +17,9 @@ public class DataAddItem{
 	@SerializedName("tgl_kembali")
 	private String tglKembali;
 
+	@SerializedName("tgl_aju_kembali")
+	private String tglAjuKembali;
+
 	@SerializedName("name")
 	private String name;
 
@@ -48,6 +51,10 @@ public class DataAddItem{
 
 	public String getKode(){
 		return kode;
+	}
+
+	public String getTglAjuKembali(){
+		return tglAjuKembali;
 	}
 
 	public String getTglKembali(){

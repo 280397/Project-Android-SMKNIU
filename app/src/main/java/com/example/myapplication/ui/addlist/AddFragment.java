@@ -65,10 +65,6 @@ public class AddFragment extends Fragment{
         btn = (Button) root.findViewById(R.id.btnscan);
         progressBar = root.findViewById(R.id.progadd);
 
-
-//
-
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +82,7 @@ public class AddFragment extends Fragment{
                     et_keperluan.setError("Form tidak boleh kosong!");
                 }else {
                     Intent i = new Intent(getActivity(), ScanAdminAddActivity.class);
-                    i.putExtra("tgl_kembali",et_tgl_kembali.getText().toString());
+                    i.putExtra("tgl_aju_kembali",et_tgl_kembali.getText().toString());
                     i.putExtra("keperluan",et_keperluan.getText().toString());
                     startActivity(i);
                 }
@@ -143,8 +139,8 @@ public class AddFragment extends Fragment{
         });
     }
 
-    private void delete(final String id_detail, final int possition){
-        Call<ResponseAdd> del = Initretrofit.getInstance().delAddList(id_detail);
+    private void delete(final String id, final int possition){
+        Call<ResponseAdd> del = Initretrofit.getInstance().delAddList(id);
 //        Log.d("taggg",id);
         del.enqueue(new Callback<ResponseAdd>() {
             @Override
@@ -156,7 +152,7 @@ public class AddFragment extends Fragment{
 
             @Override
             public void onFailure(Call<ResponseAdd> call, Throwable t) {
-
+                Toast.makeText(getActivity(), "Gagal dihapus", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -181,26 +177,6 @@ public class AddFragment extends Fragment{
         }
     }
 
-    //    public void pinjam(String id_user_pjm, String tgl_kembali, String keperluan){
-//        Call<ResponseAdd> pinjam = Initretrofit.getInstance().putData(id_user_pjm,tgl_kembali, keperluan);
-//        pinjam.enqueue(new Callback<ResponseAdd>() {
-//            @Override
-//            public void onResponse(Call<ResponseAdd> call, Response<ResponseAdd> response) {
-//              Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
-//
-////              mengosongkan form
-//              et_tgl_kembali.setText("");
-//              et_keperluan.setText("");
-//                add.clear();
-//              adapter.setData(add);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseAdd> call, Throwable t) {
-//
-//            }
-//        });
-//    }
+
 
 }

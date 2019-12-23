@@ -63,7 +63,7 @@ public class ScanAdminAddActivity extends AppCompatActivity implements ZXingScan
         int currentApiVersion = Build.VERSION.SDK_INT;
 
         Bundle extras = getIntent().getExtras();
-        et_tgl_kembali = extras.getString("tgl_kembali");
+        et_tgl_kembali = extras.getString("tgl_aju_kembali");
         et_keperluan = extras.getString("keperluan");
         Log.d("lihat", et_tgl_kembali+et_keperluan);
 
@@ -220,17 +220,17 @@ public class ScanAdminAddActivity extends AppCompatActivity implements ZXingScan
 
     }
 
-    public void pinjam(String id_user_pjm, String tgl_kembali,String id_admin, String keperluan){
-        Call<ResponseAdd> pinjam = Initretrofit.getInstance().putData(id_user_pjm,tgl_kembali,id_admin,keperluan);
+    public void pinjam(String id_user_pjm, String tgl_aju_kembali,String id_admin, String keperluan){
+        Call<ResponseAdd> pinjam = Initretrofit.getInstance().putData(id_user_pjm,tgl_aju_kembali,id_admin,keperluan);
         pinjam.enqueue(new Callback<ResponseAdd>() {
             @Override
             public void onResponse(Call<ResponseAdd> call, Response<ResponseAdd> response) {
                 Toast.makeText(ScanAdminAddActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
 
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("tgl_kembali", "");
-                resultIntent.putExtra("keperluan", "");
-                setResult(ScanAdminAddActivity.RESULT_OK, resultIntent);
+                Intent i = new Intent(ScanAdminAddActivity.this, DrawerActivity.class);
+                i.putExtra("tgl_kembali", "");
+                i.putExtra("keperluan", "");
+                startActivity(i);
                 finish();
 //
 

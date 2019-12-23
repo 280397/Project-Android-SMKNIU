@@ -39,7 +39,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.list_name.setText(List.get(position).getNamaBarang());
         holder.list_barcode.setText(List.get(position).getBarcode());
-        holder.list_tgl_kembali.setText(List.get(position).getTglKembali());
+        holder.list_tgl_kembali.setText(List.get(position).getTglAjuKembali());
 
     }
 

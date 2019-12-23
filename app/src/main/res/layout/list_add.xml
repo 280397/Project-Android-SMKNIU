@@ -7,25 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/list_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/list_add"
             android:padding="16dp"
+            android:layout_width="match_parent"
+            android:weightSum="100"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-
             <LinearLayout
-                android:layout_width="266dp"
+                android:layout_width="0dp"
+                android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:orientation="vertical"
-                android:paddingRight="8dp">
-
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/add_barcode"
@@ -44,18 +38,23 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-            <Button
-                android:id="@+id/btnhapus"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="hapus"
-                android:textColor="@color/cardview_light_background"
-                android:background="@color/colorAccent"
-                android:textSize="10sp"
-                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btnhapus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="hapus"
+                    android:textColor="@color/cardview_light_background"
+                    android:background="@color/colorAccent"
+                    android:textSize="10sp"
+                    android:layout_gravity="right"/>
+            </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
 
     <!--    <view-->
     <!--        android:layout_width="match_parent"-->

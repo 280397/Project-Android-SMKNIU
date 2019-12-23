@@ -175,7 +175,6 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 //                            Toast.makeText(ScanActivity.this, data.getNamaBarang(), Toast.LENGTH_SHORT).show();
 //                            Log.d("tag",""+);
                             postSe(Prefs.getString(SharedPreferences.getId(),""),data.getBarcode());
-//                            postSe(Prefs.getString(SharedPreferences.getId(),""),data.getId(),data.getBarcode());
                             Log.d(TAG, "onClick: "+data.getId()+"--"+SharedPreferences.getId()+"--"+data.getBarcode());
                         }
                     });
@@ -222,13 +221,15 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {
                 Log.d("halo", response.body().getMessage());
+
+
                 Toast.makeText(ScanActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
             public void onFailure(Call<ResponseData> call, Throwable t) {
-                Toast.makeText(ScanActivity.this, "Goods in loan status or\nQueue goods", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanActivity.this, "Items in loan status or\nQueue items", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

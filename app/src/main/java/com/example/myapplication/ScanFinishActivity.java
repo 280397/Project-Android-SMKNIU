@@ -167,18 +167,17 @@ public class ScanFinishActivity extends AppCompatActivity implements ZXingScanne
                 if (res.isStatus()) {
                     Log.d("tag", res.getMessage());
 
-                    final DataKembaliItem data = res.getDataKembali().get(0);
-                    dialog.setMessage(barangkembali +"\n"+data.getNamaBarang());
-                    dialog.setTitle("Pinjam "+data.getNamaBarang()+"?");
+                    final DataKembaliItem dataf = res.getDataKembali().get(0);
+                    dialog.setMessage(barangkembali +"\n"+dataf.getNamaBarang());
+                    dialog.setTitle("Pinjam "+dataf.getNamaBarang()+"?");
                     dialog.setCancelable(false);
                     dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 //                            Toast.makeText(ScanActivity.this, data.getNamaBarang(), Toast.LENGTH_SHORT).show();
 //                            Log.d("tag",""+);
-//                            postSe(Prefs.getString(SharedPreferences.getId(),""),data.getBarcode());
-//                            postSe(Prefs.getString(SharedPreferences.getId(),""),data.getId(),data.getBarcode());
-                            Log.d(TAG, "onClick: "+data.getId()+"--"+SharedPreferences.getId()+"--"+data.getBarcode());
+                            postSeFinish(Prefs.getString(SharedPreferences.getId(),""), dataf.getKode(),dataf.getBarcode());
+                            Log.d(TAG, "onClick: "+dataf.getId()+"--"+SharedPreferences.getId()+"--"+dataf.getBarcode());
                         }
                     });
 
@@ -198,7 +197,8 @@ public class ScanFinishActivity extends AppCompatActivity implements ZXingScanne
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                            Toast.makeText(ScanFinishActivity.this, "Barcode not registered!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ScanFinishActivity.this, "\n" +
+                                    "This item is not in the queue! or\nBarcode not registered!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });
@@ -218,23 +218,23 @@ public class ScanFinishActivity extends AppCompatActivity implements ZXingScanne
         });
     }
 
-//    private void postSe (String id_user_pjm, String barcode){
-//        final Call<ResponseKembali> post = Initretrofit.getInstance().postPinjamSe(id_user_pjm,barcode);
-//        post.enqueue(new Callback<ResponseKembali>() {
-//            @Override
-//            public void onResponse(Call<ResponseKembali> call, Response<ResponseKembali> response) {
-//                Log.d("halo", response.body().getMessage());
-//                Toast.makeText(ScanFinishActivity.this, "Success", Toast.LENGTH_SHORT).show();
-//                finish();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseKembali> call, Throwable t) {
-//                Toast.makeText(ScanFinishActivity.this, "Goods in loan status or\nQueue goods", Toast.LENGTH_SHORT).show();
-//                finish();
-//            }
-//        });
-//    }
+    private void postSeFinish(String id_user_pjm, String kode, String barcode){
+        final Call<ResponseKembali> post = Initretrofit.getInstance().postKembaliSe(id_user_pjm,kode,barcode);
+        post.enqueue(new Callback<ResponseKembali>() {
+            @Override
+            public void onResponse(Call<ResponseKembali> call, Response<ResponseKembali> response) {
+                Log.d("halo", response.body().getMessage());
+                Toast.makeText(ScanFinishActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseKembali> call, Throwable t) {
+                Toast.makeText(ScanFinishActivity.this, "Goods in loan status or\nQueue goods", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
 
 
 }
